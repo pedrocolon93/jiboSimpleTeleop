@@ -90,7 +90,7 @@ class RobotSender:
 
         position = JiboVec3(x, y, z)
 
-        msg.look_at = position
+        msg.lookat = position
 
         self.robot_commander.publish(msg)
         rospy.loginfo(msg)
