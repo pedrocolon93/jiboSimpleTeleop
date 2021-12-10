@@ -219,15 +219,17 @@ if __name__ == '__main__':
 
 
     def lookLeft():
-        pass
+        print('Gonna look at...left')
+
+        rs.send_robot_lookat_cmd(0.3,0.2,0.3)
 
 
     def lookRight():
-        pass
+        rs.send_robot_lookat_cmd(0, 1, 0.4)
 
 
     def lookMiddle():
-        pass
+        rs.send_robot_lookat_cmd(0.3, 0.7, 0.4)
 
 
     leftButton = Button(lookAtFrame, text="Left", command=lookLeft)
