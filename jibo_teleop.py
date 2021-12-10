@@ -204,6 +204,9 @@ class RobotSender:
 
 
 if __name__ == '__main__':
+    rs = RobotSender()
+    rs.start_robot_publisher()
+
     root = Tk()
     frame = Frame(root)
     frame.pack()
@@ -242,7 +245,10 @@ if __name__ == '__main__':
     T = Text(speakFrame, height=1, width=30)
     T.pack(side=LEFT)
     def speak():
-        print('Gonna speak...', T.get(1.0,END))
+        data = T.get(1.0,END).strip()
+        print('Gonna speak...', data)
+        rs.send_robot_tts_cmd(data)
+
     speakButton = Button(speakFrame, text="Speak", command=speak)
     speakButton.pack(side=LEFT)
 
@@ -261,8 +267,8 @@ if __name__ == '__main__':
     Z.pack(side=LEFT)
     def lookAtCustom():
         print('Gonna look at...', X.get(1.0,END),Y.get(1.0,END),Z.get(1.0,END))
+        rs.send_robot_lookat_cmd(float(X.get(1.0,END)),float(Y.get(1.0,END)),float(Z.get(1.0,END)))
     lookAtCustomButton = Button(lookAtCustomFrame, text="Look At", command=lookAtCustom)
     lookAtCustomButton.pack(side=LEFT)
-
 
     root.mainloop()
