@@ -19,6 +19,8 @@ class RobotSender:
     def __init__(self):
         self.robot_commander = None
         self.robot_asr_commander = None
+        self.next_turn_signaler = None
+
 
     def start_robot_publisher(self):
         """
@@ -33,6 +35,8 @@ class RobotSender:
 
         self.robot_commander = rospy.Publisher(msgTopic, msgType, queue_size=10)
         self.robot_asr_commander = rospy.Publisher('jibo_asr_command', JiboAsrCommand, queue_size=1)
+        self.next_turn_signaler = rospy.Publisher('is_next_turn_response', Bool, queue_size=10)
+
         rate = rospy.Rate(10)  # spin at 10 Hz
         rate.sleep()  # sleep to wait for subscribers
 
@@ -199,6 +203,12 @@ class RobotSender:
         self.robot_commander.publish(msg)
         rospy.loginfo(msg)
 
+    def send_next_turn(self):
+        a = Bool(True)
+        print("Sending next turn")
+        self.next_turn_signaler.publish(a)
+        rospy.loginfo(a)
+
 
 
 
@@ -222,14 +232,16 @@ if __name__ == '__main__':
         print('Gonna look at...left')
 
         rs.send_robot_lookat_cmd(0.3,0.2,0.3)
-
+        rs.send_next_turn()
 
     def lookRight():
         rs.send_robot_lookat_cmd(0, 1, 0.4)
+        rs.send_next_turn()
 
 
     def lookMiddle():
         rs.send_robot_lookat_cmd(0.3, 0.7, 0.4)
+        rs.send_next_turn()
 
 
     leftButton = Button(lookAtFrame, text="Left", command=lookLeft)
@@ -272,5 +284,12 @@ if __name__ == '__main__':
         rs.send_robot_lookat_cmd(float(X.get(1.0,END)),float(Y.get(1.0,END)),float(Z.get(1.0,END)))
     lookAtCustomButton = Button(lookAtCustomFrame, text="Look At", command=lookAtCustom)
     lookAtCustomButton.pack(side=LEFT)
+
+    def nextTurnSingle():
+        print('Gonna look at...', X.get(1.0,END),Y.get(1.0,END),Z.get(1.0,END))
+        rs.send_next_turn()
+    lookAtCustomButton = Button(lookAtCustomFrame, text="Next Turn Signal", command=nextTurnSingle)
+    lookAtCustomButton.pack(side=LEFT)
+
 
     root.mainloop()
