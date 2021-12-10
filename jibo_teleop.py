@@ -1,5 +1,5 @@
 from Tkconstants import END
-from tkinter import LEFT, Button, TOP, Label, Frame, BOTTOM, Tk, Text
+from Tkinter import LEFT, Button, TOP, Label, Frame, BOTTOM, Tk, Text
 
 try:
     import rospy
